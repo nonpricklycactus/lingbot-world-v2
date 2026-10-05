@@ -1,0 +1,20 @@
+# Windows 原生部署用的依赖清单（本分支维护，不是上游原文件）
+#
+# 为什么另起一份：上游 requirements.txt 里没有 einops（模型代码要用它），
+# 而且列了 flash_attn —— 那个包在 Windows 上没有轮子，装了必失败。
+# 这份清单按本机实测结果写，装之前先用 aria2 抓 torch 的轮子（见 deploy/README.md 第 3 步），
+# torch / torchvision 走本地轮子安装，不在这里列。
+torchaudio
+opencv-python>=4.9.0.80
+diffusers>=0.31.0
+transformers==4.51.3
+tokenizers>=0.20.3
+accelerate>=1.1.1
+tqdm
+imageio[ffmpeg]
+easydict
+ftfy
+imageio-ffmpeg
+einops
+numpy>=1.23.5,<2
+scipy
