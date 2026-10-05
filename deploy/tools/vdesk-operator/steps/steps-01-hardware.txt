@@ -1,0 +1,11 @@
+# 步骤 1: 硬件与系统记录 (手册 §2.2)
+cls
+WAIT 1.2
+Get-CimInstance Win32_OperatingSystem | Select-Object Caption,Version,OSArchitecture
+WAIT 3.0
+Get-CimInstance Win32_ComputerSystem | Select-Object Manufacturer,Model,@{Name='TotalRAM_GiB';Expression={[math]::Round($_.TotalPhysicalMemory / 1GB, 2)}}
+WAIT 3.0
+Get-CimInstance Win32_VideoController | Select-Object Name,DriverVersion
+WAIT 3.0
+Get-PSDrive -PSProvider FileSystem | Select-Object Name,Root,Free
+WAIT 3.0

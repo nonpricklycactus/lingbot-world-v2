@@ -1,3 +1,7 @@
+> **Windows 原生部署分支（非官方）**：本分支（`windows-native-deploy`）在上游代码上加入了
+> 在一台 6GB 显存 Windows 笔记本上跑通单卡 `i2v-1.3B causal_fast` 13 帧所需的改动与记录 ——
+> SDPA 等价补丁、分步执行器、部署手册与 13 页实测图文，见 [`deploy/`](deploy/README.md)。
+> 上游代码与模型许可为 CC BY-NC-SA 4.0；本分支是衍生版本，非官方支持，不提供商业授权。
 <div align="center">
   <img src="assets/teaser.png">
 

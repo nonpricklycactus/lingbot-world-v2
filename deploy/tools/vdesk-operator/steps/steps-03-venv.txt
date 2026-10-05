@@ -1,0 +1,19 @@
+# 步骤 3: 建立 venv (手册 §4.1, uv 零安装)
+cls
+WAIT 1.2
+$Root = 'F:\AI\lingbot-world-v2'
+WAIT 1.0
+$Venv = Join-Path $Root '.venv'
+$Py = Join-Path $Venv 'Scripts\python.exe'
+WAIT 1.2
+$env:UV_CACHE_DIR = 'F:\AI\runtime\uv-cache'
+$env:PIP_CACHE_DIR = 'F:\AI\runtime\pip-cache'
+WAIT 1.2
+uv python find 3.12
+WAIT 2.5
+uv venv --python 3.12 --seed $Venv
+WAIT 8.0
+& $Py --version
+WAIT 2.0
+& $Py -m pip --version
+WAIT 2.5

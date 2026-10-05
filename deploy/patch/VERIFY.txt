@@ -1,0 +1,42 @@
+# attention.py 补丁 · 验证记录（2026-10-05）
+
+## 是什么
+`wan/modules/attention.py` 的本地补丁：给 `flash_attention()` 增加一条与 flash-attn varlen
+语义等价的 PyTorch SDPA 回退实现，使 `causal_fast` 的 cross-attention 在没有 flash-attn 的
+Windows 原生环境下也能跑。详见手册 §4.4.2。
+
+## 文件
+| 文件 | 说明 |
+|---|---|
+| `attention.py.orig` | 官方原版（固定 commit `1895d300…`），SHA-256 `b6f57f0a9bb36164cdccc3f03345f287f95dc5703bbc25cf1aaddaff946b8500` |
+| `attention.py.patched.py` | 打完补丁的文件，SHA-256 `d0efbca939f07b8948e49cf44e43834d388e1b5f6efd0f4d37f7141063511558` |
+| `attention-patch.diff` | 差异，125 行（git diff -U3） |
+| `test_attention_fallback.py` | 17 项离线验证 |
+
+## 补丁改了三处
+1. 顶部加 `import os`；
+2. `flash_attention()` 最前面加分支：缺少 flash-attn 时改走 `_sdpa_varlen_attention()`；
+3. `attention()` 改为直接委托 `flash_attention()`（**原来的官方回退会静默忽略 padding mask，会改变结果**）；
+4. 文件末尾新增 `_attention_impl()` 与 `_sdpa_varlen_attention()`（GQA 展开 / 变长 padding mask / causal / 滑动窗口）。
+
+## 验证结果（都是实际跑出来的）
+### 1) 离线数值比对：17 / 17 通过
+```
+Ran 17 tests in 0.017s
+OK
+```
+含：与 float64 手写参考实现逐元素比对（误差 < 2e-5）、GQA、causal、滑窗、q_lens/k_lens、
+自定义 scale、以及两条对照实验 —— 证明**原版官方回退确实忽略 padding**，补丁版不忽略。
+
+### 2) CUDA 上真实形状冒烟测试：通过
+```
+impl = sdpa | cuda = True
+out: (1, 1560, 12, 128) torch.bfloat16 | 有限值: True | 峰值显存 MiB: 23.6
+```
+形状取自 480×832 单帧 cross-attention 的量级（Lq=1560, Lk=512, heads=12, dim=128），
+`k_lens=[400]` 走的是带 padding mask 的分支。
+
+## 边界
+- 这不是官方支持的路径，属于本机实验分支；成片里必须说明。
+- 装上真 flash-attn 后 `_attention_impl()` 会自动优先用 flash-attn，补丁不需要回滚
+  （`WAN_ATTENTION_IMPL=auto|flash|sdpa` 可强制切换）。

@@ -1,0 +1,21 @@
+# 步骤 2: 获取代码并固定 commit (手册 §3) — 从零重新克隆
+cls
+WAIT 1.2
+$Root = 'F:\AI\lingbot-world-v2'
+$Base = Split-Path $Root -Parent
+New-Item -ItemType Directory -Force $Base | Out-Null
+WAIT 1.5
+Set-Location $Base
+WAIT 1.0
+git clone https://github.com/robbyant/lingbot-world-v2.git
+WAIT 175
+Set-Location $Root
+WAIT 1.5
+git rev-parse HEAD
+WAIT 3.0
+git log --oneline -1
+WAIT 3.0
+git status --short
+WAIT 3.0
+if ((git rev-parse HEAD) -eq '1895d300d8ac936401689b26389f51cbd36530eb') { 'commit MATCH' } else { 'commit MISMATCH' }
+WAIT 3.0

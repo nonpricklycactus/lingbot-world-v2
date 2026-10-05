@@ -1,0 +1,16 @@
+# 步骤 0: 环境自检 (手册 §2.1)
+# 按用户要求: 解释性提示不敲 (留给配音), py/python 的预期缺失也不再演示
+Get-Command nvidia-smi,git,ffmpeg,ffprobe -ErrorAction SilentlyContinue | Select-Object Name,Source
+WAIT 3.0
+nvidia-smi
+WAIT 4.5
+git --version
+WAIT 1.5
+ffmpeg -version | Select-Object -First 1
+WAIT 1.5
+ffprobe -version | Select-Object -First 1
+WAIT 1.5
+uv --version
+WAIT 1.5
+uv python find 3.12
+WAIT 2.5
