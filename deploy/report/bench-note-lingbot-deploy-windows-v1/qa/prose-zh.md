@@ -132,15 +132,19 @@ CUDA 闸门的判据是代码里真的返回 True：torch.cuda.is_available() �
 
 官方入口 pip install flash-attn --no-build-isolation， 在这台机器上退出码 1，import 也失败。
 
+| 折在哪一步 | 实际输出 |
+|---|---|
+| 找预编译轮子 | Precompiled wheel not found → HTTP Error 404 |
+| 回退源码编译 | FileNotFoundError [WinError 2]：本机没有 MSVC |
+| 构建脚本校验 CUDA | RuntimeError：检测到 13.3，而 PyTorch 由 12.8 编译 |
+
 CUDA 版本不匹配，源码编译中止
 
-安装退出码 1，接着 import flash_attn 失败
-
-三条原因叠在一起：① PyPI 上只有源码包，构建脚本去找预编译轮子得到 HTTP 404；② 本机没有 MSVC，回退源码编译立刻 FileNotFoundError；③ 本机检测到 CUDA 13.3，而 PyTorch 是 12.8 编的，版本校验直接抛 RuntimeError。
+失败发生在安装阶段，模型一个字节都还没加载——这不是显存问题。
 
 07 / 卡点
 
-这不是显存问题：失败发生在安装阶段，模型一个字节都还没加载。
+三条同时成立才失败；本次不装 MSVC 与另一套 CUDA，改用代码回退（下一页）。
 
 
 ## 解法：给 cross-attention 加一条 PyTorch 等价回退

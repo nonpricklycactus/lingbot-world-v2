@@ -53,8 +53,8 @@ python .claude/skills/humanizer-zh/tests/check_structure.py \
 - `check`：25 块 → 13 页，0 预警 0 错误
 - `render`：两次渲染的 13 张 PNG **逐字节一致**
 - `package-report.cjs`：13 页几何检查通过，无内部溢出、无面板溢出、图片全部解码
-- `export-pdf.py`：13 页、每页嵌入像素与 page-*.png 完全相同；PDF SHA-256 `5609e72b209a0ab2cff97350a454689b3477f0a71e837eec0caf9c10f11f14cb`
-- 去 AI 味：humanizer-zh 四轮（套话尾巴、过度断言「必然失败」、会原样显示的反引号、中文直引号、图注里「真实录屏」这类一眼可见的强调、「真跑 / 实录 / 原样保留 / 照实记录」这类词；按用户要求删掉原「一页复用清单」页；参数改成一条一行、不再几个参数挤在一格里）；表格数据、代码块、数字与口径逐字未动，前后对照见 `qa/humanizer-review.json`
+- `export-pdf.py`：13 页、每页嵌入像素与 page-*.png 完全相同；PDF SHA-256 `6bb9cd2f8fab4379ccdd30f502211d8dec4447ea5175758d9bcafda5fcff95f1`
+- 去 AI 味：humanizer-zh 五轮（套话尾巴、过度断言「必然失败」、会原样显示的反引号、中文直引号、图注里「真实录屏」这类一眼可见的强调、「真跑 / 实录 / 原样保留 / 照实记录」这类词；按用户要求删掉原「一页复用清单」页；参数改成一条一行；第 7 页三条失败原因改成一行一条，去掉重复的报错代码块）；表格数据、代码块、数字与口径逐字未动，前后对照见 `qa/humanizer-review.json`
 - 审批状态：`pending`（本目录没有 06-review 记录）
 
 ## 已知缺口（照实留档）

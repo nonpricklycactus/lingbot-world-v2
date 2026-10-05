@@ -63,6 +63,7 @@ const css = [
   '.report-panel .question{padding:12px 0 12px 22px;border-left:4px solid #9b4938;font-size:28px;line-height:1.58}.report-panel .observation{padding-top:18px;border-top:2px solid #9b4938;font-size:27px;line-height:1.6}',
   '.report-panel table{width:100%;border-collapse:collapse;table-layout:fixed;margin:0;font-size:25px;line-height:1.45}.report-panel th{font-size:22px;color:#766c5e;font-weight:400;text-align:left;padding:12px 10px;border-bottom:2px solid #a99b83}.report-panel td{padding:14px 10px;border-bottom:1px solid #d7cfbf;text-align:left;vertical-align:top;overflow-wrap:anywhere}.report-panel td:first-child{color:#766c5e}.report-panel .compact td{padding:11px 10px}.report-panel .mono td,.report-panel .mono th{font-family:Consolas,"Microsoft YaHei",monospace!important;font-size:21px}',
   '.report-panel .tight th{padding:6px 10px}.report-panel .tight td{padding:7px 10px;font-size:22px}.report-panel .tight.mono td{font-size:20px}',
+  '.report-panel .kv th:first-child,.report-panel .kv td:first-child{width:29%}.report-panel .kv td:last-child{color:#292824}',
   '.report-panel .step{display:grid;grid-template-columns:58px 1fr;gap:18px;padding:13px 0;border-bottom:1px solid #d7cfbf}.report-panel .step .index{font-size:34px;font-weight:700;color:#9b4938}.report-panel .step b{font-size:28px}',
   '.report-panel .shot{margin:0 auto;border:1px solid #cfc5b3;background:#f8f5ee}.report-panel .shot img{display:block;width:100%;height:auto}.report-panel .capture-label{font-size:22px;line-height:1.4;margin-bottom:8px}.report-panel .capture-label strong{color:#8e4937}',
   '.report-panel .code{font-family:Consolas,"Microsoft YaHei",monospace!important;font-size:20px;line-height:1.5;white-space:pre-wrap;word-break:break-all;background:#f6f2e7;border-left:3px solid #a99b83;padding:16px 20px;color:#3b3a35}',
@@ -192,14 +193,14 @@ add('main', '环境', '依赖装齐，CUDA 闸门通过',
 // 07 卡点：flash-attn
 add('main', '卡点', '卡点：flash-attn 在 Windows 原生下装不了',
   p('官方入口 pip install flash-attn --no-build-isolation，\n在这台机器上退出码 1，import 也失败。', 'question') +
+  table(['折在哪一步', '实际输出'], [
+    ['找预编译轮子', 'Precompiled wheel not found → HTTP Error 404'],
+    ['回退源码编译', 'FileNotFoundError [WinError 2]：本机没有 MSVC'],
+    ['构建脚本校验 CUDA', 'RuntimeError：检测到 13.3，而 PyTorch 由 12.8 编译'],
+  ], 'compact mono kv') +
   shot('fa-cuda.png', 880, 'CUDA 版本不匹配，源码编译中止', 'step-06a-flashattn-fail.mp4 @290s') +
-  shot('fa-exit.png', 760, '安装退出码 1，接着 import flash_attn 失败', 'step-06a-flashattn-fail.mp4 @290s') +
-  code('Precompiled wheel not found. Building from source...\n' +
-    'urllib.error.HTTPError: HTTP Error 404: Not Found\n' +
-    'FileNotFoundError: [WinError 2] 系统找不到指定的文件\n' +
-    'RuntimeError: The detected CUDA version (13.3) mismatches the version that was used to compile PyTorch (12.8)') +
-  p('三条原因叠在一起：① PyPI 上只有源码包，构建脚本去找预编译轮子得到 HTTP 404；② 本机没有 MSVC，回退源码编译立刻 FileNotFoundError；③ 本机检测到 CUDA 13.3，而 PyTorch 是 12.8 编的，版本校验直接抛 RuntimeError。', 'observation'),
-  '这不是显存问题：失败发生在安装阶段，模型一个字节都还没加载。');
+  p('失败发生在安装阶段，模型一个字节都还没加载——这不是显存问题。', 'observation'),
+  '三条同时成立才失败；本次不装 MSVC 与另一套 CUDA，改用代码回退（下一页）。');
 
 // 08 解法：SDPA 等价回退
 add('main', '卡点', '解法：给 cross-attention 加一条 PyTorch 等价回退',

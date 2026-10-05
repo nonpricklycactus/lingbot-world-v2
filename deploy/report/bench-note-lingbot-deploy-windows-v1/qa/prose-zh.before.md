@@ -12,7 +12,7 @@
 
 系统内存
 
-环境 → 克隆 → 依赖 → 卡点 → 补丁 → 权重 → 13 帧
+环境 → 克隆 → 依赖 → 卡点 → 补丁 → 权重 → 13 帧 仓库与手册：github.com/nonpricklycactus/lingbot-world-v2 · 分支 windows-native-deploy
 
 
 ## 这次要回答什么
