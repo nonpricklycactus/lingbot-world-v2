@@ -120,7 +120,7 @@ pages.push({
     p('13 帧 · 832×464 · 一步约 12.7 分钟', 'lead') +
     '<div class="split"><div>' + p('显存', 'label') + '<p class="num">6<span class="unit"> GB</span></p></div><div>' +
     p('系统内存', 'label') + '<p class="num">64<span class="unit"> GB</span></p></div></div>' +
-    p('环境 → 克隆 → 依赖 → 卡点 → 补丁 → 权重 → 13 帧', 'footer') + '</section>\n',
+    p('环境 → 克隆 → 依赖 → 卡点 → 补丁 → 权重 → 13 帧\n仓库与手册：github.com/nonpricklycactus/lingbot-world-v2 · 分支 windows-native-deploy', 'footer') + '</section>\n',
 });
 
 // 02 这次要回答什么

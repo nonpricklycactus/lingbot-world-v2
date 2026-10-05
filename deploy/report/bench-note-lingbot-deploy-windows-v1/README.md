@@ -24,6 +24,7 @@
 
 ## 素材与来源
 
+- 代码与手册（公开仓库，非官方分支）：`https://github.com/nonpricklycactus/lingbot-world-v2`，分支 `windows-native-deploy`；`deploy/` 下是补丁、手册、分步执行器与这份图文
 - 原始录屏与结果：`07-素材/世界模型部署相关/录屏-20261005/`（`raw/` 17 段、`result/lingbot-13f.mp4`、`patch/`、`logs/`）
 - 用户本机截图：`07-素材/世界模型部署相关/基础信息01-03.png`（录制当天 12:10 的只读实测；第 3 页的 nvidia-smi 图取自 `基础信息01.png`，已裁掉命令行提示符，画面里不含用户名）
 - 手册：`02-内容工厂/output/lingbot-world-1.3b-deployment-manual-v1.md`
@@ -52,7 +53,7 @@ python .claude/skills/humanizer-zh/tests/check_structure.py \
 - `check`：25 块 → 13 页，0 预警 0 错误
 - `render`：两次渲染的 13 张 PNG **逐字节一致**
 - `package-report.cjs`：13 页几何检查通过，无内部溢出、无面板溢出、图片全部解码
-- `export-pdf.py`：13 页、每页嵌入像素与 page-*.png 完全相同；PDF SHA-256 `22afe6b1e5d03ff67fb4e4924c91706494e4bae43834f8e7d7d2384461be8d77`
+- `export-pdf.py`：13 页、每页嵌入像素与 page-*.png 完全相同；PDF SHA-256 `5609e72b209a0ab2cff97350a454689b3477f0a71e837eec0caf9c10f11f14cb`
 - 去 AI 味：humanizer-zh 四轮（套话尾巴、过度断言「必然失败」、会原样显示的反引号、中文直引号、图注里「真实录屏」这类一眼可见的强调、「真跑 / 实录 / 原样保留 / 照实记录」这类词；按用户要求删掉原「一页复用清单」页；参数改成一条一行、不再几个参数挤在一格里）；表格数据、代码块、数字与口径逐字未动，前后对照见 `qa/humanizer-review.json`
 - 审批状态：`pending`（本目录没有 06-review 记录）
 
